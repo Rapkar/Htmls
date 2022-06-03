@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans" />
+    <link href="http://fonts.cdnfonts.com/css/source-sans-pro" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    </style>
+</head>
+
+<body>
+    <div class="modal fade" id="term" data-keyboard="false" style="background: rgb(0 0 0 / 56%);" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg  modal-dialog-centered" role="document">
+            <div class="modal-content pt-4 pb-0 px-5">
+                <div class="modal-header border-0 pb-0">
+                    <h2 style="font-size: 22px;">Wichtiger Hinweis</h2>
+
+                </div>
+                <div class="modal-body pt-0" style="overflow-y: scroll;">
+                    <p style="font-size: 14px;">Die folgenden Seiten enthalten Informationen und Dokumente, die nur zu Informationszwecken gedacht sind. Diese stellen weder ein Angebot noch eine Einladung zur Zeichnung oder zum Erwerb von Wertpapieren noch eine Anlageberatung oder
+                        sonstige Wertpapierdienstleistungen dar; ferner sind die hierin enthaltenen Informationen oder Dokumente nicht als Grundlage einer vertraglichen oder anderweitigen Verpflichtung gedacht. Eine Investitionsentscheidung betreffend
+                        der 5,25 % Biohacks-Anleihe 2022/2024 (ISIN: DE000A3K0PN0) der Biohacks Schweiz AG („Gesellschaft“) muss ausschließlich auf der Basis des Basisinformationsblatts nach der Verordnung (EU) Nr. 1286/2014 des Europäischen Parlaments
+                        und des Rates vom 26. November 2014 über Basisinformationsblätter für verpackte Anlageprodukte für Kleinanleger und Versicherungsanlageprodukte erfolgen, das auf <a href="https://biohackscompany.com/" target="_blank" rel="noopener noreferrer">www.biohackscompany.com</a>                        unter der Rubrik <a href="https://biohackscompany.com/anleihe/" target="_blank" rel="noopener noreferrer">Anleihe</a> veröffentlicht wird. Alle der auf den folgenden Seiten beschriebenen Wertpapiere wurden und werden nicht unter
+                        den Vorschriften des U.S. Securities Act von 1933 in derzeit gültiger Fassung („US Securities Act“) registriert und dürfen auch nicht ohne Registrierung bzw. Befreiung von der Registrierung nach dem U.S. Securities Act in den Vereinigten
+                        Staaten von Amerika oder an „US-Personen“ im Sinne der Regulation S des US Securities Act, weiterverkauft oder zum Weiterverkauf angeboten werden.
+                        <br><br> DIE FOLGENDEN INFORMATIONEN UND DOKUMENTE SIND NICHT FÜR PERSONEN BESTIMMT, DIE (I) IHREN WOHNSITZ IN DEN VEREINIGTEN STAATEN VON AMERIKA HABEN ODER SONST ALS „US PERSONS“ (IM SINNE DER REGULATION S DES US SECURITIES ACT)
+                        GELTEN, (II) PERSONEN, DIE IN KANADA, JAPAN ODER AUSTRALIEN IHREN WOHNSITZ HABEN ODER (III) EINER ANDEREN RECHTSORDNUNG UNTERLIEGEN, NACH WELCHER SOLCHE PERSONEN KEINEN ZUGANG ZU SOLCHEN INFORMATIONEN HABEN DÜRFEN. DIE INFORMATIONEN
+                        DÜRFEN VON DEN GENANNTEN PERSONEN WEDER EINGESEHEN NOCH AN DIESE VERTEILT WERDEN.
+                        <br><br> Um Zugang zu den folgenden Seiten dieser Website zu erhalten, müssen Sie bestätigen, dass Sie
+                        <br><br> (i) nicht in den Vereinigten Staaten von Amerika, Kanada, Japan oder Australien wohnhaft sind oder sonst als „US-Personen“ im Sinne der Regulation S des US Securities Act, gelten (ii) nicht aus anderen Gründen eine Person
+                        sind, die durch das auf sie anwendbare Recht im Zugang zu den Informationen auf dieser Seite beschränkt ist, (iii) keine der hierin enthaltenen Informationen oder Dokumente an die genannten Personen weiterleiten werden und (iv)
+                        nicht für eine in den oben genannten Bestimmungen (i), (ii) oder (iii) beschriebene im Zugang beschränkte Person handeln.
+                        <br><br> Durch Anklicken des „Bestätigen“-Feldes erklären Sie diese Bestätigung.
+                    </p>
+                    <div class="modal-footer border-0 justify-content-start">
+                        <button type="button" id="acceptTerms" data-dismiss="modal"> Bestätigen</button>
+
+                    </div>
+                </div>
+                <br> <br>
+            </div>
+        </div>
+    </div>
+
+    <section id="content">
+        <div class="header">
+            <span>
+                <img id="logo" src="./img/logo.png">
+            </span>
+        </div>
+        <div class="container head-line ">
+            <div class="col-lg-8 col-12 m-auto row pt-4">
+                <div class="col-4 text-center">
+                    <div class=" item" id="leve1">
+                        <div class="circle">
+                            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <defs></defs>
+                                <path d="M419,256A163,163,0,1,0,256,419,163,163,0,0,0,419,256Z"></path>
+                                <path
+                                    d="M494,256C494,124.6,387.4,18,256,18S18,124.6,18,256,124.6,494,256,494,494,387.4,494,256Z"
+                                    style="fill: none; stroke: currentColor; stroke-miterlimit: 10; stroke-width: 32px;">
+                                </path>
+                            </svg>
+                            <svg class="Active" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M256,0C114.84,0,0,114.84,0,256S114.84,512,256,512,512,397.16,512,256,397.16,0,256,0ZM389.23,170.2,223.82,367.13a19.71,19.71,0,0,1-14.77,7h-.34a19.67,19.67,0,0,1-14.63-6.52l-70.89-78.77a19.69,19.69,0,1,1,28.65-27c.21.23.42.45.62.68l55.74,61.94L359.08,144.87a19.69,19.69,0,0,1,30.15,25.33Z">
+                                </path>
+                            </svg>
+
+                        </div>
+                    </div>
+                    <div class="text-container">
+                        <div class="label mt-2">1. Anfrage</div>
+                    </div>
+                </div>
+                <div class="col-4 text-center">
+                    <div class=" item  deactive" id="leve2">
+                        <div class="circle">
+                            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <defs></defs>
+                                <path d="M419,256A163,163,0,1,0,256,419,163,163,0,0,0,419,256Z"></path>
+                                <path
+                                    d="M494,256C494,124.6,387.4,18,256,18S18,124.6,18,256,124.6,494,256,494,494,387.4,494,256Z"
+                                    style="fill: none; stroke: currentColor; stroke-miterlimit: 10; stroke-width: 32px;">
+                                </path>
+                            </svg>
+                            <svg class="Active" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M256,0C114.84,0,0,114.84,0,256S114.84,512,256,512,512,397.16,512,256,397.16,0,256,0ZM389.23,170.2,223.82,367.13a19.71,19.71,0,0,1-14.77,7h-.34a19.67,19.67,0,0,1-14.63-6.52l-70.89-78.77a19.69,19.69,0,1,1,28.65-27c.21.23.42.45.62.68l55.74,61.94L359.08,144.87a19.69,19.69,0,0,1,30.15,25.33Z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-container">
+                        <div class="label mt-2">2. Prüfung</div>
+                    </div>
+                </div>
+                <div class="col-4 text-center">
+                    <div class=" item  deactive" id="leve3">
+                        <div class="circle">
+                            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <defs></defs>
+                                <path d="M419,256A163,163,0,1,0,256,419,163,163,0,0,0,419,256Z"></path>
+                                <path
+                                    d="M494,256C494,124.6,387.4,18,256,18S18,124.6,18,256,124.6,494,256,494,494,387.4,494,256Z"
+                                    style="fill: none; stroke: currentColor; stroke-miterlimit: 10; stroke-width: 32px;">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-container">
+                        <div class="label mt-2">3. Angebot</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center head-title" style="padding-top:20px; padding-bottom:20px;">
+                <h2 class="head-title-bg">Welche Anlagesumme wären Sie bereit anzulegen?</h2>
+            </div>
+            <div class="multiple-choice-label text-center head-des"><label class="block-label head-title-des">Bitte wählen Sie eine
+                    Option</label></div>
+        </div>
+    </section>
+    <form class=" m-auto ">
+        <section id="loader" class="d-none">
+            <div class="container head-line ">
+                <div class="col-8 m-auto row pt-5 d-felx justify-content-center">
+                    <div class="loader ">
+                        <div class="circle-loader-checkmark draw"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section class="" id="anlagesumme">
+            <div class="multiple-choice mc-list text-center">
+                <div class="multiple-choice-inner" style="justify-content:center;">
+                    <div class="multiple-choice-option-container">
+                        <div class="multiple-choice-option" hey-nextscreen="screen-d864b4a0" hey-important="" hey-autoredirect="true"><label>
+                                <div class="option-counter">1</div><input
+                                    onclick="heyflow.navigation.navigate('go','screen-d864b4a0');" type="radio"
+                                    id="id-01eb1764" data-type="multiple-choice" data-label="Potentielle Anlagesumme"
+                                    name="id-916023b5" data-variable="" value="id-01eb1764" data-conditional="true"
+                                    data-answer="Unter 10.000 €" required="" data-destination="screen-d864b4a0"
+                                    data-priority="0">
+                                <div class="option-content">
+                                    <div class="selector-container radio-selector"><span class="radio"></span></div>
+                                    <div class="label-container">
+                                        <div class="label">Unter 10.000 €</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container">
+                        <div class="multiple-choice-option" hey-nextscreen="screen-d864b4a0" hey-important="" hey-autoredirect="true"><label>
+                                <div class="option-counter">2</div><input
+                                    onclick="heyflow.navigation.navigate('go','screen-d864b4a0');" type="radio"
+                                    id="id-351ebf04" data-type="multiple-choice" data-label="Potentielle Anlagesumme"
+                                    name="id-916023b5" data-variable="" value="id-351ebf04" data-conditional="true"
+                                    data-answer="10.000 - 25.000 €" required="" data-destination="screen-d864b4a0"
+                                    data-priority="0">
+                                <div class="option-content">
+                                    <div class="selector-container radio-selector"><span class="radio"></span></div>
+                                    <div class="label-container">
+                                        <div class="label">10.000 - 25.000 €</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container ">
+                        <div class="multiple-choice-option" hey-nextscreen="screen-d864b4a0" hey-important="" hey-autoredirect="true"><label>
+                                <div class="option-counter">3</div><input
+                                    onclick="heyflow.navigation.navigate('go','screen-d864b4a0');" type="radio"
+                                    id="id-7dba244f" data-type="multiple-choice" data-label="Potentielle Anlagesumme"
+                                    name="id-916023b5" data-variable="" value="id-7dba244f" data-conditional="true"
+                                    data-answer="25.000 - 50.000 €" required="" data-destination="screen-d864b4a0"
+                                    data-priority="0">
+                                <div class="option-content">
+                                    <div class="selector-container radio-selector"><span class="radio"></span></div>
+                                    <div class="label-container">
+                                        <div class="label">25.000 - 50.000 €</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container">
+                        <div class="multiple-choice-option" hey-nextscreen="screen-d864b4a0" hey-important="" hey-autoredirect="true"><label>
+                                <div class="option-counter">4</div><input
+                                    onclick="heyflow.navigation.navigate('go','screen-d864b4a0');" type="radio"
+                                    id="id-325b03a3" data-type="multiple-choice" data-label="Potentielle Anlagesumme"
+                                    name="id-916023b5" data-variable="" value="id-325b03a3" data-conditional="true"
+                                    data-answer="50.000 € +" required="" data-destination="screen-d864b4a0"
+                                    data-priority="0">
+                                <div class="option-content">
+                                    <div class="selector-container radio-selector"><span class="radio"></span></div>
+                                    <div class="label-container">
+                                        <div class="label">50.000 € +</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="erreichbarkeit">
+            <div class="multiple-choice mc-list text-center">
+                <div class=" multiple-choice-inner " style="justify-content:center; ">
+                    <div class="multiple-choice-option-container ">
+                        <div class="multiple-choice-option " hey-nextscreen="screen-ffa9beda " hey-important=" " hey-autoredirect="true "><label>
+                                <div class="option-counter ">1</div><input
+                                    onclick="heyflow.navigation.navigate( 'go', 'screen-ffa9beda'); " type="radio"
+                                    id="id-1787fd88 " data-type="multiple-choice " data-label="Erreichbarkeit "
+                                    name="id-5692bf8d " data-variable=" " value="id-1787fd88 " data-conditional="true "
+                                    data-answer="Vormittags " required=" " data-destination="screen-ffa9beda "
+                                    data-priority="0 ">
+                                <div class="option-content ">
+                                    <div class="selector-container radio-selector "><span class="radio "></span></div>
+                                    <div class="label-container ">
+                                        <div class="label ">Vormittags</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container ">
+                        <div class="multiple-choice-option " hey-nextscreen="screen-ffa9beda " hey-important=" " hey-autoredirect="true "><label>
+                                <div class="option-counter ">2</div><input
+                                    onclick="heyflow.navigation.navigate( 'go', 'screen-ffa9beda'); " type="radio"
+                                    id="id-2c00b150 " data-type="multiple-choice " data-label="Erreichbarkeit "
+                                    name="id-5692bf8d " data-variable=" " value="id-2c00b150 " data-conditional="true "
+                                    data-answer="Nachmittags " required=" " data-destination="screen-ffa9beda "
+                                    data-priority="0 ">
+                                <div class="option-content ">
+                                    <div class="selector-container radio-selector "><span class="radio "></span></div>
+                                    <div class="label-container ">
+                                        <div class="label ">Nachmittags</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container ">
+                        <div class="multiple-choice-option " hey-nextscreen="screen-ffa9beda " hey-important=" " hey-autoredirect="true "><label>
+                                <div class="option-counter ">3</div><input
+                                    onclick="heyflow.navigation.navigate( 'go', 'screen-ffa9beda'); " type="radio"
+                                    id="id-64994c2b " data-type="multiple-choice " data-label="Erreichbarkeit "
+                                    name="id-5692bf8d " data-variable=" " value="id-64994c2b " data-conditional="true "
+                                    data-answer="Abends " required=" " data-destination="screen-ffa9beda "
+                                    data-priority="0 ">
+                                <div class="option-content ">
+                                    <div class="selector-container radio-selector "><span class="radio "></span></div>
+                                    <div class="label-container ">
+                                        <div class="label ">Abends</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                    <div class="multiple-choice-option-container ">
+                        <div class="multiple-choice-option " hey-nextscreen="screen-ffa9beda " hey-important=" " hey-autoredirect="true "><label>
+                                <div class="option-counter ">4</div><input
+                                    onclick="heyflow.navigation.navigate( 'go', 'screen-ffa9beda'); " type="radio"
+                                    id="id-4d5306f9 " data-type="multiple-choice " data-label="Erreichbarkeit "
+                                    name="id-5692bf8d " data-variable=" " value="id-4d5306f9 " data-conditional="true "
+                                    data-answer="Beliebig " required=" " data-destination="screen-ffa9beda "
+                                    data-priority="0 ">
+                                <div class="option-content ">
+                                    <div class="selector-container radio-selector "><span class="radio "></span></div>
+                                    <div class="label-container ">
+                                        <div class="label ">Beliebig</div>
+                                    </div>
+                                </div>
+                                <div></div>
+                            </label></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="kontakt" class="container m-auto">
+            <div class="block col-lg-8 col-12 m-auto" style="" data-blocktype="rich-text">
+                <div class="block-content text-block align-center inner-mid">
+                    <div class="text-center" style="padding-top:20px; padding-bottom:20px;">
+                        <h4>✔️ Hervorragend!</h4>
+                        <h4>Bitte hinterlassen Sie uns nun Ihre Kontaktdaten. Im Anschluss erhalten Sie weitere Informationen zur Anleihe der Biohacks (Schweiz) AG!</h4>
+                        <h4><br></h4>
+                        <h4><u>Achtung: Dieses Angebot ist nur bis zum 15.08.2022 verfügbar und begrenzt.</u></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-12 m-auto px-4" style="justify-content:normal; flex-direction:column; align-items:stretch; margin-right:auto; margin-left:auto; padding-top:20px; padding-bottom:20px;" class="elements-container-inner inner-narrow">
+                <div class="block " style="" data-blocktype="elements-v2">
+                    <div class="block-content elements-container elements-v2-container inner-full">
+                        <div class="container-style-plain" style="padding-top:5px; padding-bottom:5px;">
+                            <div class="elements-container-inner inner-narrow" style="justify-content:normal;align-items:center;flex-direction:row;gap:10px;margin-left:auto;margin-right:auto;">
+                                <div class="block" style="" data-blocktype="input">
+                                    <div class="block-content input-box inner-narrow show-error-on-nav with-floating-label floating-label-inline" style="" id="input-fb2b2a15-container">
+                                        <div style=""><label for="input-fb2b2a15">Ihr Vorname</label>
+                                            <div class="input validated">
+                                                <div style="display:flex;">
+                                                    <div style="flex:1;position:relative;"><input id="input-fb2b2a15" type="text" data-type="input" data-label="Ihr Vorname" data-variable="" data-mask="" name="input-fb2b2a15" placeholder="Max" autofocus="" autocomplete="off" required class="">
+                                                        <div class="input-floating-label"><span>Ihr Vorname</span></div>
+                                                    </div>
+                                                </div><datalist id="datalist-input-fb2b2a15"><option>Option 1</option><option>Option 2</option></datalist>
+                                                <div class="error-box"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>                                                    <span class="text">Please enter your first name</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="block" style="" data-blocktype="input">
+                                    <div class="block-content input-box inner-narrow show-error-on-nav with-floating-label floating-label-inline" style="" id="input-57571269-container">
+                                        <div style=""><label for="input-57571269">Ihr Nachname</label>
+                                            <div class="input">
+                                                <div style="display:flex;">
+                                                    <div style="flex:1;position:relative;"><input id="input-57571269" data-type="input" data-label="Ihr Nachname" data-variable="" data-mask="" name="input-57571269" placeholder="Muster" required="required" autocomplete="off" class="">
+                                                        <div class="input-floating-label"><span>Ihr Nachname</span></div>
+                                                    </div>
+                                                </div><datalist id="datalist-input-57571269"><option>Option 1</option><option>Option 2</option></datalist>
+                                                <div class="error-box"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>                                                    <span class="text">Bitte geben einen Nachnamen an</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block" style="" data-blocktype="input">
+                    <div class="block-content input-box inner-narrow show-error-on-nav with-floating-label floating-label-inline" style="" id="input-83be48bb-container">
+                        <div style="padding-top:5px; padding-bottom:5px;"><label for="input-83be48bb">Ihre E-Mail Adresse</label>
+                            <div class="input has-prefix">
+                                <div style="display:flex;">
+                                    <div class="input-decorator input-prefix input-prefix-icon"><i class="material-icons" icon="mail_outline">mail_outline</i></div>
+                                    <div style="flex:1;position:relative;"><input id="input-83be48bb" data-type="input" data-label="Ihre E-Mail Adresse" data-variable="" data-mask="" name="input-83be48bb" placeholder="address@mail.com" pattern="^\S+@\S+\.\S+$" maxlength="" required="required"
+                                            autocomplete="email" class="">
+                                        <div class="input-floating-label"><span>Ihre E-Mail Adresse</span></div>
+                                    </div>
+                                </div><datalist id="datalist-input-83be48bb"><option>Option 1</option><option>Option 2</option></datalist>
+                                <div class="error-box"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>                                    <span class="text">Bitte geben Sie eine gültige E-Mail Adresse an</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block" style="" data-blocktype="input">
+                    <div class="block-content input-box inner-narrow show-error-on-nav with-floating-label floating-label-inline" style="" id="input-79319158-container">
+                        <div style="padding-top:5px; padding-bottom:5px;"><label for="input-79319158">Ihre Telefonnummer</label>
+                            <div class="input has-prefix">
+                                <div style="display:flex;">
+                                    <div class="input-decorator input-prefix input-prefix-svg"><svg id="Raw" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M92.47629,124.81528a84.34782,84.34782,0,0,0,39.05334,38.8759,7.92754,7.92754,0,0,0,7.8287-.59231L164.394,146.40453a8,8,0,0,1,7.58966-.69723l46.837,20.073A7.97345,7.97345,0,0,1,223.619,174.077,48.00882,48.00882,0,0,1,176,216,136,136,0,0,1,40,80,48.00882,48.00882,0,0,1,81.923,32.381a7.97345,7.97345,0,0,1,8.29668,4.79823L110.31019,84.0571a8,8,0,0,1-.65931,7.53226L93.01449,117.00909A7.9287,7.9287,0,0,0,92.47629,124.81528Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg></div>
+                                    <div style="flex:1;position:relative;">
+                                        <div class="awesomplete">
+                                            <div class="awesomplete"><input type="tel" id="input-79319158" data-type="input" data-label="Ihre Telefonnummer" data-variable="" data-mask="" name="input-79319158" placeholder="0172 12 43 567" required="required" autocomplete="off"
+                                                    class="awesomplete" aria-expanded="false" aria-owns="awesomplete_list_3" role="combobox">
+                                                <ul hidden="" role="listbox" id="awesomplete_list_3"></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-atomic="true">Type 2 or more characters for results.</span></div>
+                                            <ul hidden="" role="listbox" id="awesomplete_list_1"></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-atomic="true">Type 2 or more characters for results.</span></div>
+                                        <div class="input-floating-label"><span>Ihre Telefonnummer</span></div>
+                                    </div>
+                                </div><datalist id="datalist-input-79319158"><option>+49</option><option>+48</option><option>+41</option><option>0049</option><option>0048</option><option>0041</option></datalist>
+                                <div class="error-box"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>                                    <span class="text">Bitte gibt eine valide Telefonnummer an.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block" style="" data-blocktype="simple-checkbox">
+                    <div class="block-content simple-checkbox inner-narrow">
+                        <div style="padding-top:5px; padding-bottom:5px;"><label for="checkbox-5b5070d8"><input type="checkbox" hey-type="simple-checkbox" data-type="simple-checkbox" id="checkbox-5b5070d8" name="checkbox-5b5070d8" data-label="User agreement" data-answer="✔" value="✔" required="required"><div class="simple-checkbox-content" style="display:flex;"><span class="checkbox"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="216 72.005 104 184 48 128.005" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg></span><div class="label-container"><span class="simple-checkbox-text">Ich bin mit den <a target="_blank" href="https://biohackscompany.com/datenschutz/">Datenschutzbedingungen</a> einverstanden</span></div></div></label></div>
+                    </div>
+                </div>
+                <div class="block" style="" data-blocktype="rich-text">
+                    <div class="block-content text-block align-center inner-mid">
+                        <div style="padding-top:10px; padding-bottom:10px; text-align: center;">
+                            <p>🔓 Ihre Daten werden gemäß der DSGVO streng vertraulich und nur zum Zweck Ihrer Anfrage erhoben.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="block" style="" data-blocktype="generic-button">
+                    <div class="block-content generic-button-block inner-narrow">
+                        <div style="padding-top:20px; padding-bottom:20px;"><button id="button-3a1bbe3b" class="generic-button submit large" onclick="heyflow.buttonClick(this, 'submit', 'screen-3ff23c66', '{&quot;label&quot;:&quot;Jetzt&amp;nbsp;Zugang&amp;nbsp;sichern&quot;,&quot;name&quot;:&quot;button-submit&quot;,&quot;paddingTop&quot;:20,&quot;paddingBottom&quot;:20,&quot;destination&quot;:&quot;screen-3ff23c66&quot;,&quot;class&quot;:&quot;submit&amp;nbsp;large&quot;,&quot;nextAction&quot;:&quot;go&quot;,&quot;containerClass&quot;:&quot;inner-narrow&quot;,&quot;type&quot;:&quot;generic-button&quot;,&quot;action&quot;:&quot;submit&quot;,&quot;id&quot;:&quot;button-3a1bbe3b&quot;,&quot;contentClass&quot;:&quot;align-space-between&quot;}')"><div class="indicators"><div class="loading"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><path opacity="0.3" fill="currentColor" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946 s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634 c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path><path fill="currentColor" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0 C22.32,8.481,24.301,9.057,26.013,10.047z"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform></path></svg></div><div class="success"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="216 72.005 104 184 48 128.005" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg></div><div class="error"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg></div></div><div class="content align-space-between"><div class="label-container"><span class="label">Jetzt Zugang sichern</span></div><span class="graphic"><svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M219.53563,121.02,50.62075,26.42762A8,8,0,0,0,39.178,36.09836l31.86106,89.211a8,8,0,0,1,0,5.38138L39.178,219.90164a8,8,0,0,0,11.44277,9.67074l168.91488-94.59233A8,8,0,0,0,219.53563,121.02Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path><line x1="72" y1="128" x2="136" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg></span></div></button></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="block text-center" style="" data-blocktype="rich-text">
+                <div class="block-content text-block align-center inner-mid">
+                    <div class="col-lg-8 col-12 m-auto" style="padding-top:20px; padding-bottom:20px;">
+                        <h3><strong>Risikohinweis</strong></h3>
+                        <h5>Der Erwerb dieser Vermögensanlage ist mit erheblichen Risken verbunden und kann zum vollständigen Verlust des eingesetzten Vermögens führen. Das Verlustrisiko betrifft sowohl die Rückzahlung des eingesetzten Kapitals als auch die
+                            Zinsansprüche. Die Anleihe unterliegt keiner Einlagensicherung.Sie sind im Begriff, ein Produkt zu erwerben, das nicht einfach ist und schwer zu verstehen sein kann. Die Investitionsentscheidung sollte auf Basis des Basisinformationsblatts
+                            getroffen werden. Dieses steht hier zum Download zur Verfügung.</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+    <footer>
+        <div style="text-align:center; "><img src="./img/footer-logo.png " alt="Eigenes ">
+        </div>
+        <div style="padding-top:20px; padding-bottom:20px; ">
+            <ul class="link-list ">
+                <li><a href="https://biohackscompany.com/impressum/ " target="_self ">Impressum</a></li>
+                <li><a href="https://biohackscompany.com/datenschutz/ " target="_blank ">Datenschutz</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js " integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous "></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js " integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2 " crossorigin="anonymous "></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js " integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF " crossorigin="anonymous "></script>
+
+<script type="text/javascript ">
+    $('#term').modal('show');
+    $('#acceptTerms').click(function() {
+        $('#term').modal('hide');
+        sessionStorage.setItem("lastname", "Smith");
+        let personName = sessionStorage.getItem("lastname");
+        console.log(personName);
+    })
+
+
+    function loading(nextel, bgmsg = null, desmsg = null) {
+        $("#loader ").removeClass('d-none');
+        $("#loader .loader ").fadeIn("slow");
+        $("#loader .circle-loader-checkmark ").removeClass('success');
+        $("#loader .loader ").removeClass('loading');
+        $('.head-title-bg').html('Wir prüfen Ihre Angaben... ');
+        $('.head-title-des').html('Geben Sie uns einen Moment...');
+        setTimeout(function() {
+            $('footer').fadeIn();
+            $("#loader .loader ").addClass('loading');
+            $("#loader .circle-loader-checkmark ").addClass('success');
+            $("#loader .loader ").fadeOut();
+            // $(nextel).css('opacity', '1');
+            // $(nextel).css('visibility', 'visible');
+            $(nextel).toggle();
+            $('.head-title-bg').html(bgmsg);
+            $('.head-title-des').html(desmsg);
+        }, 2000);
+
+    }
+    $('#anlagesumme input').on('click', function() {
+        $('#leve1').addClass('Active');
+        $("#anlagesumme ").fadeOut(100);
+        $('footer').fadeOut();
+        loading('#erreichbarkeit', 'Wann können wir Sie am besten erreichen?', 'Bitte wählen Sie eine Option');
+        $('#leve2').removeClass('deactive');
+        $('#leve2').addClass('haslinecolor');
+    })
+    $('#erreichbarkeit input').on('click', function() {
+        $('#leve2').addClass('Active');
+        $("#erreichbarkeit ").fadeOut(100);
+        $('footer').fadeOut();
+
+
+
+        if (loading('#kontakt', 'Erhalten Sie jetzt Ihr persönliches Angebot! ', 'Bis zu 5,25% Rendite erhalten!')) {
+
+            $('.head-title').remove();
+            $('.head-des').remove();
+
+        }
+        $('#leve3').removeClass('deactive');
+        $('#leve3').addClass('haslinecolor');
+        setTimeout(function() {
+            $('#loader').remove();
+        }, 2500);
+    })
+    $('.input-box input').on('click', function() {
+        $(this).closest('.block').find('.input-floating-label').css('top', '20px');
+        console.log($(this).closest('block').find('.input-floating-label').html());
+    });
+    $("body").scroll(function() {
+        $("#logo").css("width", "44px");
+        $("#logo").css("height", "44px");
+    });
+</script>
+
+
+</html>
