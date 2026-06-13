@@ -1,17 +1,13 @@
 <?php
 /**
  * Shortcode: [taronix_gold_price]
+ * Add to functions.php or require this file once.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Get gold18 price from transient cache or option.
- *
- * @return int|float|false
- */
 function taronix_gold_price_get_value() {
 	$transient_key = 'taronix_gold18_price';
 	$cached_price  = get_transient( $transient_key );
@@ -33,36 +29,18 @@ function taronix_gold_price_get_value() {
 	return $price;
 }
 
-/**
- * Convert digits to Persian numerals.
- *
- * @param string $value Numeric string.
- * @return string
- */
 function taronix_gold_price_to_persian_digits( $value ) {
 	$persian_digits = array( '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' );
 
 	return str_replace( range( 0, 9 ), $persian_digits, $value );
 }
 
-/**
- * Format price with thousand separators and Persian digits.
- *
- * @param int|float $price Raw price value.
- * @return string
- */
 function taronix_gold_price_format( $price ) {
 	$formatted = number_format( (float) $price, 0, '.', ',' );
 
 	return taronix_gold_price_to_persian_digits( $formatted );
 }
 
-/**
- * Render taronix_gold_price shortcode output.
- *
- * @param array|string $atts Shortcode attributes.
- * @return string
- */
 function taronix_gold_price_render( $atts ) {
 	$price = taronix_gold_price_get_value();
 
@@ -92,17 +70,11 @@ function taronix_gold_price_render( $atts ) {
 	return ob_get_clean();
 }
 
-/**
- * Register shortcode.
- */
 function taronix_gold_price_register_shortcode() {
 	add_shortcode( 'taronix_gold_price', 'taronix_gold_price_render' );
 }
 add_action( 'init', 'taronix_gold_price_register_shortcode' );
 
-/**
- * Register stylesheet handle.
- */
 function taronix_gold_price_register_assets() {
 	wp_register_style(
 		'taronix-gold-price',
@@ -113,12 +85,6 @@ function taronix_gold_price_register_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'taronix_gold_price_register_assets' );
 
-/**
- * Invalidate cache when the gold price option is updated.
- *
- * @param mixed $old_value Previous option value.
- * @param mixed $value     New option value.
- */
 function taronix_gold_price_clear_cache( $old_value, $value ) {
 	delete_transient( 'taronix_gold18_price' );
 }
