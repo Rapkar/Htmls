@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Taronix Gold Price
  * Description: دریافت قیمت طلا از API داریک، ذخیره امن در gold18_price و نمایش با شورت‌کد taronix_gold_price
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,59 +11,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.1.0' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.0' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );
 
 require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-login-client.php';
 require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-gold-sync.php';
+require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-gold-cron-endpoint.php';
 
-/**
- * Cron schedule: every 5 minutes.
- *
- * @param array<string, array<string, int|string>> $schedules
- * @return array<string, array<string, int|string>>
- */
-function taronix_gold_price_cron_schedules( array $schedules ): array {
-	$schedules['every_five_minutes'] = array(
-		'interval' => 5 * MINUTE_IN_SECONDS,
-		'display'  => __( 'Every 5 Minutes', 'taronix-gold-price' ),
-	);
-
-	return $schedules;
+function taronix_gold_price_on_activate(): void {
+	Daric_Gold_Cron_Endpoint::ensure_secret();
 }
-add_filter( 'cron_schedules', 'taronix_gold_price_cron_schedules' );
+register_activation_hook( __FILE__, 'taronix_gold_price_on_activate' );
 
-function taronix_gold_price_schedule_sync(): void {
-	if ( wp_next_scheduled( 'daric_gold_price_cron_sync' ) ) {
-		return;
-	}
-
-	wp_schedule_event( time() + MINUTE_IN_SECONDS, 'every_five_minutes', 'daric_gold_price_cron_sync' );
-}
-
-function taronix_gold_price_unschedule_sync(): void {
+function taronix_gold_price_on_deactivate(): void {
 	$timestamp = wp_next_scheduled( 'daric_gold_price_cron_sync' );
 	if ( $timestamp ) {
 		wp_unschedule_event( $timestamp, 'daric_gold_price_cron_sync' );
 	}
 }
+register_deactivation_hook( __FILE__, 'taronix_gold_price_on_deactivate' );
 
-register_activation_hook( __FILE__, 'taronix_gold_price_schedule_sync' );
-register_deactivation_hook( __FILE__, 'taronix_gold_price_unschedule_sync' );
-
-add_action( 'daric_gold_price_cron_sync', array( 'Daric_Gold_Sync', 'sync' ) );
-
-/**
- * Run sync after plugins are loaded (once per request max).
- */
-function taronix_gold_price_bootstrap(): void {
-	if ( ! wp_next_scheduled( 'daric_gold_price_cron_sync' ) ) {
-		taronix_gold_price_schedule_sync();
-	}
+function taronix_gold_price_register_cron_route(): void {
+	Daric_Gold_Cron_Endpoint::register_routes();
 }
-add_action( 'init', 'taronix_gold_price_bootstrap', 5 );
+add_action( 'rest_api_init', 'taronix_gold_price_register_cron_route' );
 
 /**
  * Public helper for themes/cron/manual sync.
@@ -234,7 +207,14 @@ function taronix_gold_price_settings_page(): void {
 		);
 	}
 
-	$stored = Daric_Gold_Sync::get_stored_price();
+	if ( isset( $_POST['taronix_gold_regenerate_secret'] ) && check_admin_referer( 'taronix_gold_regenerate_secret' ) ) {
+		Daric_Gold_Cron_Endpoint::regenerate_secret();
+		$sync_message = '<div class="notice notice-success"><p>' . esc_html__( 'Cron secret regenerated.', 'taronix-gold-price' ) . '</p></div>';
+	}
+
+	$stored      = Daric_Gold_Sync::get_stored_price();
+	$cron_secret = Daric_Gold_Cron_Endpoint::ensure_secret();
+	$cron_url    = Daric_Gold_Cron_Endpoint::get_sync_url( $cron_secret );
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html__( 'Taronix Gold Price', 'taronix-gold-price' ); ?></h1>
@@ -270,8 +250,27 @@ function taronix_gold_price_settings_page(): void {
 			<?php wp_nonce_field( 'taronix_gold_manual_sync' ); ?>
 			<?php submit_button( __( 'Sync Price Now', 'taronix-gold-price' ), 'secondary', 'taronix_gold_manual_sync', false ); ?>
 		</form>
+
+		<h2><?php esc_html_e( 'External Cron Job', 'taronix-gold-price' ); ?></h2>
+		<p><?php esc_html_e( 'Call this URL from your server cron (every 1–5 minutes):', 'taronix-gold-price' ); ?></p>
+		<p>
+			<code style="display:block;direction:ltr;text-align:left;word-break:break-all;"><?php echo esc_html( $cron_url ); ?></code>
+		</p>
 		<p class="description">
-			<?php esc_html_e( 'You can also define DARIC_GOLD_USERNAME and DARIC_GOLD_PASSWORD in wp-config.php to override these fields.', 'taronix-gold-price' ); ?>
+			<?php esc_html_e( 'Example crontab:', 'taronix-gold-price' ); ?>
+			<code style="display:block;direction:ltr;text-align:left;white-space:pre-wrap;">*/5 * * * * curl -fsS "<?php echo esc_html( $cron_url ); ?>" &gt;/dev/null</code>
+		</p>
+		<p class="description">
+			<?php esc_html_e( 'You can also send the secret via header:', 'taronix-gold-price' ); ?>
+			<code>X-Cron-Secret: <?php echo esc_html( $cron_secret ); ?></code>
+		</p>
+		<form method="post" onsubmit="return confirm('<?php echo esc_js( __( 'Regenerate cron secret? Update your crontab afterward.', 'taronix-gold-price' ) ); ?>');">
+			<?php wp_nonce_field( 'taronix_gold_regenerate_secret' ); ?>
+			<?php submit_button( __( 'Regenerate Cron Secret', 'taronix-gold-price' ), 'delete', 'taronix_gold_regenerate_secret', false ); ?>
+		</form>
+
+		<p class="description">
+			<?php esc_html_e( 'Optional wp-config.php constants: DARIC_GOLD_USERNAME, DARIC_GOLD_PASSWORD, DARIC_GOLD_CRON_SECRET', 'taronix-gold-price' ); ?>
 		</p>
 	</div>
 	<?php
