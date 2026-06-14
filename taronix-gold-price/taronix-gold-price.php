@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Taronix Gold Price
  * Description: دریافت قیمت طلا از API داریک، ذخیره امن در gold18_price و نمایش با شورت‌کد taronix_gold_price
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.1' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.2' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );

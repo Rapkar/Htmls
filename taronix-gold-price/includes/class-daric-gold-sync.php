@@ -55,19 +55,34 @@ class Daric_Gold_Sync {
 			$credentials['password']
 		);
 
-		$response = $client->get_gold_price();
-		$new_price = self::extract_price( $response );
+		$response  = $client->get_gold_price();
+		$resolved  = self::resolve_price( $response, $previous );
+		$new_price = $resolved['price'] ?? null;
 
 		if ( null === $new_price ) {
 			$error = $response['error'] ?? 'Invalid or empty gold price response';
 			self::log(
 				sprintf(
-					'Price fetch failed (http=%s): %s',
+					'Price fetch failed (http=%s, source=%s): %s',
 					(string) ( $response['http_code'] ?? 0 ),
+					(string) ( $resolved['source'] ?? 'none' ),
 					$error
 				)
 			);
 			return self::failure_result( $previous, 'fetch_failed', $error, $response );
+		}
+
+		// قیمت فروش نیامد و از مقدار قبلی دیتابیس استفاده شد — آپدیت لازم نیست.
+		if ( 'stored_previous' === ( $resolved['source'] ?? '' ) ) {
+			return array(
+				'success'      => true,
+				'updated'      => false,
+				'price'        => $new_price,
+				'previous'     => $previous,
+				'source'       => 'stored_previous',
+				'message'      => 'BestSellPrice unavailable; kept previous stored price.',
+				'api_response' => $response,
+			);
 		}
 
 		if ( ! self::is_price_sane_vs_previous( $new_price, $previous ) ) {
@@ -154,36 +169,78 @@ class Daric_Gold_Sync {
 	}
 
 	/**
-	 * @param array<string, mixed> $response
+	 * اولویت قیمت:
+	 * 1) BestSellPrice
+	 * 2) قیمت قبلی دیتابیس (gold18_price)
+	 * 3) BestBuyPrice (فقط اگر قیمت قبلی هم نبود)
+	 *
+	 * @return array{price:?int,source:string}
 	 */
-	public static function extract_price( array $response ): ?int {
+	public static function resolve_price( array $response, ?int $previous ): array {
+		$empty = array(
+			'price'  => null,
+			'source' => 'none',
+		);
+
 		if ( empty( $response['ok'] ) ) {
-			return null;
+			if ( null !== $previous ) {
+				return array(
+					'price'  => $previous,
+					'source' => 'stored_previous',
+				);
+			}
+
+			return $empty;
 		}
 
 		$json = $response['raw_json'] ?? null;
 		if ( ! is_array( $json ) || empty( $json['IsSuccess'] ) ) {
-			return null;
+			if ( null !== $previous ) {
+				return array(
+					'price'  => $previous,
+					'source' => 'stored_previous',
+				);
+			}
+
+			return $empty;
 		}
 
 		$data = $json['Data'] ?? array();
 		if ( ! is_array( $data ) ) {
-			return null;
-		}
-
-		$candidates = array(
-			$data['BestSellPrice'] ?? null,
-			$data['BestBuyPrice'] ?? null,
-		);
-
-		foreach ( $candidates as $candidate ) {
-			$price = self::normalize_price( $candidate );
-			if ( null !== $price ) {
-				return $price;
+			if ( null !== $previous ) {
+				return array(
+					'price'  => $previous,
+					'source' => 'stored_previous',
+				);
 			}
+
+			return $empty;
 		}
 
-		return null;
+		$sell_price = self::normalize_price( $data['BestSellPrice'] ?? null );
+		if ( null !== $sell_price ) {
+			return array(
+				'price'  => $sell_price,
+				'source' => 'best_sell_price',
+			);
+		}
+
+		if ( null !== $previous ) {
+			return array(
+				'price'  => $previous,
+				'source' => 'stored_previous',
+			);
+		}
+
+		$buy_price = self::normalize_price( $data['BestBuyPrice'] ?? null );
+		if ( null !== $buy_price ) {
+			return array(
+				'price'  => $buy_price,
+				'source' => 'best_buy_price',
+			);
+		}
+
+		return $empty;
 	}
 
 	/**

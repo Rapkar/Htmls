@@ -171,7 +171,7 @@ $price = taronix_gold_price_get_value(); // int یا false
 1. فراخوانی از endpoint کران (با secret معتبر)
 2. credentialهای API تنظیم شده باشند
 3. API پاسخ `IsSuccess: true` بدهد
-4. `BestSellPrice` یا `BestBuyPrice` عدد مثبت باشد
+4. `BestSellPrice` از API معتبر باشد، یا قیمت قبلی دیتابیس موجود باشد، یا `BestBuyPrice` (فقط وقتی قیمت قبلی نیست)
 5. قیمت بین **۱۰۰,۰۰۰** تا **۹۹۹,۹۹۹,۹۹۹** تومان باشد
 6. نسبت به قیمت قبلی منطقی باشد (پیش‌فرض: بین ۵۰٪ تا ۲۰۰٪)
 
@@ -199,8 +199,9 @@ Header: Authorization: Bearer {access_token}
 
 ### ۳. اولویت قیمت
 
-1. `BestSellPrice` (قیمت فروش)
-2. `BestBuyPrice` (قیمت خرید) — اگر اولی نبود
+1. **`BestSellPrice`** — قیمت فروش از API
+2. **`gold18_price`** — قیمت قبلی دیتابیس (اگر فروش نیامد)
+3. **`BestBuyPrice`** — قیمت خرید از API (فقط اگر قیمت قبلی هم نبود)
 
 ---
 
