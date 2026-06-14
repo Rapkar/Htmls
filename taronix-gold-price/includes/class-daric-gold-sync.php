@@ -328,21 +328,3 @@ class Daric_Gold_Sync {
 		return str_replace( $persian, range( 0, 9 ), str_replace( $arabic, range( 0, 9 ), $value ) );
 	}
 }
-		return array(
-			'success'      => false,
-			'updated'      => false,
-			'price'        => $previous,
-			'previous'     => $previous,
-			'code'         => $code,
-			'message'      => $message,
-			'api_response' => $api_response,
-		);
-	}
-
-	private static function to_ascii_digits( string $value ): string {
-		$persian = array( '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' );
-		$arabic  = array( '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' );
-
-		return str_replace( $persian, range( 0, 9 ), str_replace( $arabic, range( 0, 9 ), $value ) );
-	}
-}
