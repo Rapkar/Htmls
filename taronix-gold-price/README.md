@@ -26,7 +26,8 @@
          قیمت معتبر                      قیمت نامعتبر
               │                               │
               ▼                               ▼
-   update_option('gold18_price')      قیمت قبلی حفظ می‌شود
+   update_option('gold18_price')
+   update_option('gold24_price')      ← gold18 × 24/18
    delete_transient('h7a_get_initial_data')
    delete_transient('taronix_gold18_price')
               │
@@ -34,7 +35,7 @@
    شورت‌کد [taronix_gold_price] قیمت را از gold18_price نمایش می‌دهد
 ```
 
-**نکته مهم:** تا زمانی که URL کران صدا زده نشود، `gold18_price` **هیچ‌وقت** عوض نمی‌شود — نه با بازدید سایت، نه با شورت‌کد، نه با ذخیره تنظیمات.
+**نکته مهم:** تا زمانی که URL کران صدا زده نشود، `gold18_price` و `gold24_price` **هیچ‌وقت** عوض نمی‌شوند.
 
 ---
 
