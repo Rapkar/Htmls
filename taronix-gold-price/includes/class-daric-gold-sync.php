@@ -21,9 +21,26 @@ class Daric_Gold_Sync {
 	private const MAX_PRICE = 999999999;
 
 	/**
+	 * Update gold18_price only when triggered by the external cron endpoint.
+	 *
 	 * @return array<string, mixed>
 	 */
-	public static function sync(): array {
+	public static function sync_from_cron(): array {
+		return self::sync( true );
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	private static function sync( bool $from_cron ): array {
+		if ( ! $from_cron ) {
+			return self::failure_result(
+				self::get_stored_price(),
+				'cron_only',
+				'Price can only be updated by calling the cron endpoint.'
+			);
+		}
+
 		$previous = self::get_stored_price();
 
 		$credentials = self::get_credentials();

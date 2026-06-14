@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Taronix Gold Price
  * Description: دریافت قیمت طلا از API داریک، ذخیره امن در gold18_price و نمایش با شورت‌کد taronix_gold_price
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.0' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.1' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );
@@ -37,15 +37,6 @@ function taronix_gold_price_register_cron_route(): void {
 	Daric_Gold_Cron_Endpoint::register_routes();
 }
 add_action( 'rest_api_init', 'taronix_gold_price_register_cron_route' );
-
-/**
- * Public helper for themes/cron/manual sync.
- *
- * @return array<string, mixed>
- */
-function taronix_gold_price_sync_from_api(): array {
-	return Daric_Gold_Sync::sync();
-}
 
 /**
  * @return int|false
@@ -133,19 +124,6 @@ function taronix_gold_price_clear_display_cache( $old_value, $value ): void {
 add_action( 'update_option_' . Daric_Gold_Sync::OPTION_PRICE, 'taronix_gold_price_clear_display_cache', 10, 2 );
 
 /**
- * Optional WP-CLI command: wp taronix-gold sync
- */
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	WP_CLI::add_command(
-		'taronix-gold sync',
-		static function (): void {
-			$result = taronix_gold_price_sync_from_api();
-			WP_CLI::print_value( $result );
-		}
-	);
-}
-
-/**
  * Admin settings for API credentials (optional; wp-config constants override).
  */
 function taronix_gold_price_register_settings(): void {
@@ -198,15 +176,6 @@ function taronix_gold_price_settings_page(): void {
 	}
 
 	$sync_message = '';
-	if ( isset( $_POST['taronix_gold_manual_sync'] ) && check_admin_referer( 'taronix_gold_manual_sync' ) ) {
-		$result       = taronix_gold_price_sync_from_api();
-		$sync_message = sprintf(
-			'<div class="notice notice-%s"><p>%s</p></div>',
-			! empty( $result['success'] ) ? 'success' : 'error',
-			esc_html( (string) ( $result['message'] ?? 'Sync finished.' ) )
-		);
-	}
-
 	if ( isset( $_POST['taronix_gold_regenerate_secret'] ) && check_admin_referer( 'taronix_gold_regenerate_secret' ) ) {
 		Daric_Gold_Cron_Endpoint::regenerate_secret();
 		$sync_message = '<div class="notice notice-success"><p>' . esc_html__( 'Cron secret regenerated.', 'taronix-gold-price' ) . '</p></div>';
@@ -246,12 +215,8 @@ function taronix_gold_price_settings_page(): void {
 			</table>
 			<?php submit_button( __( 'Save Settings', 'taronix-gold-price' ) ); ?>
 		</form>
-		<form method="post">
-			<?php wp_nonce_field( 'taronix_gold_manual_sync' ); ?>
-			<?php submit_button( __( 'Sync Price Now', 'taronix-gold-price' ), 'secondary', 'taronix_gold_manual_sync', false ); ?>
-		</form>
-
 		<h2><?php esc_html_e( 'External Cron Job', 'taronix-gold-price' ); ?></h2>
+		<p><?php esc_html_e( 'gold18_price is updated only when this URL is called. Until then, the stored price never changes.', 'taronix-gold-price' ); ?></p>
 		<p><?php esc_html_e( 'Call this URL from your server cron (every 1–5 minutes):', 'taronix-gold-price' ); ?></p>
 		<p>
 			<code style="display:block;direction:ltr;text-align:left;word-break:break-all;"><?php echo esc_html( $cron_url ); ?></code>

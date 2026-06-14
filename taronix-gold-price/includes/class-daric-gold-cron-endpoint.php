@@ -74,7 +74,7 @@ class Daric_Gold_Cron_Endpoint {
 		set_transient( self::TRANSIENT_RUNNING, 1, 60 );
 
 		try {
-			$result = Daric_Gold_Sync::sync();
+			$result = Daric_Gold_Sync::sync_from_cron();
 		} finally {
 			delete_transient( self::TRANSIENT_RUNNING );
 		}
