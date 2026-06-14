@@ -94,12 +94,15 @@ class Daric_Gold_Cron_Endpoint {
 	 */
 	private static function format_public_response( array $result ): array {
 		return array(
-			'success'  => (bool) ( $result['success'] ?? false ),
-			'updated'  => (bool) ( $result['updated'] ?? false ),
-			'price'    => $result['price'] ?? Daric_Gold_Sync::get_stored_price(),
-			'previous' => $result['previous'] ?? null,
-			'code'     => $result['code'] ?? null,
-			'message'  => (string) ( $result['message'] ?? '' ),
+			'success'     => (bool) ( $result['success'] ?? false ),
+			'updated'     => (bool) ( $result['updated'] ?? false ),
+			'price'       => $result['price'] ?? Daric_Gold_Sync::get_stored_price(),
+			'previous'    => $result['previous'] ?? null,
+			'price_24'    => $result['price_24'] ?? Daric_Gold_Sync::get_stored_price_24(),
+			'previous_24' => $result['previous_24'] ?? null,
+			'updated_24'  => (bool) ( $result['updated_24'] ?? false ),
+			'code'        => $result['code'] ?? null,
+			'message'     => (string) ( $result['message'] ?? '' ),
 		);
 	}
 

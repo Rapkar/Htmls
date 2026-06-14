@@ -197,11 +197,21 @@ GET https://apisc.daric.gold/Loan/api/v1/Tara/GetGoldlPrice
 Header: Authorization: Bearer {access_token}
 ```
 
-### ۳. اولویت قیمت
+### ۳. اولویت قیمت ۱۸ عیار
 
 1. **`BestSellPrice`** — قیمت فروش از API
 2. **`gold18_price`** — قیمت قبلی دیتابیس (اگر فروش نیامد)
 3. **`BestBuyPrice`** — قیمت خرید از API (فقط اگر قیمت قبلی هم نبود)
+
+### ۴. قیمت ۲۴ عیار
+
+بعد از آپدیت موفق `gold18_price`:
+
+```
+gold24_price = round(gold18_price × 24 / 18)
+```
+
+اگر محاسبه ۲۴ عیار نامعتبر باشد، **هیچ‌کدام** آپدیت نمی‌شوند.
 
 ---
 
@@ -209,7 +219,8 @@ Header: Authorization: Bearer {access_token}
 
 | کلید | نوع | کاربرد |
 |------|-----|--------|
-| `gold18_price` | option | قیمت اصلی طلا (تومان) |
+| `gold18_price` | option | قیمت ۱۸ عیار (تومان) — از API |
+| `gold24_price` | option | قیمت ۲۴ عیار (تومان) — محاسبه از ۱۸ عیار × 24/18 |
 | `daric_gold_username` | option | نام کاربری API |
 | `daric_gold_password` | option | رمز API |
 | `daric_gold_login_url` | option | آدرس لاگین |

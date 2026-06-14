@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Taronix Gold Price
- * Description: دریافت قیمت طلا از API داریک، ذخیره امن در gold18_price و نمایش با شورت‌کد taronix_gold_price
- * Version: 1.2.4
+ * Description: دریافت قیمت طلا از API داریک، ذخیره gold18_price و gold24_price و نمایش با شورت‌کد
+ * Version: 1.3.0
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.4' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.3.0' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );
@@ -56,6 +56,27 @@ function taronix_gold_price_get_value() {
 	}
 
 	set_transient( Daric_Gold_Sync::TRANSIENT_DISPLAY, $price, 5 * MINUTE_IN_SECONDS );
+
+	return $price;
+}
+
+/**
+ * @return int|false
+ */
+function taronix_gold_price_get_value_24() {
+	$cached_price = get_transient( Daric_Gold_Sync::TRANSIENT_DISPLAY_24 );
+
+	if ( false !== $cached_price && Daric_Gold_Sync::normalize_price( $cached_price ) ) {
+		return (int) $cached_price;
+	}
+
+	$price = Daric_Gold_Sync::get_stored_price_24();
+
+	if ( null === $price ) {
+		return false;
+	}
+
+	set_transient( Daric_Gold_Sync::TRANSIENT_DISPLAY_24, $price, 5 * MINUTE_IN_SECONDS );
 
 	return $price;
 }
@@ -124,6 +145,11 @@ function taronix_gold_price_clear_display_cache( $old_value, $value ): void {
 }
 add_action( 'update_option_' . Daric_Gold_Sync::OPTION_PRICE, 'taronix_gold_price_clear_display_cache', 10, 2 );
 
+function taronix_gold_price_clear_display_cache_24( $old_value, $value ): void {
+	delete_transient( Daric_Gold_Sync::TRANSIENT_DISPLAY_24 );
+}
+add_action( 'update_option_' . Daric_Gold_Sync::OPTION_PRICE_24, 'taronix_gold_price_clear_display_cache_24', 10, 2 );
+
 /**
  * Admin settings for API credentials (optional; wp-config constants override).
  */
@@ -183,6 +209,7 @@ function taronix_gold_price_settings_page(): void {
 	}
 
 	$stored      = Daric_Gold_Sync::get_stored_price();
+	$stored_24   = Daric_Gold_Sync::get_stored_price_24();
 	$cron_secret = Daric_Gold_Cron_Endpoint::ensure_secret();
 	$cron_url    = Daric_Gold_Cron_Endpoint::get_sync_url( $cron_secret );
 	?>
@@ -197,6 +224,11 @@ function taronix_gold_price_settings_page(): void {
 			);
 			?>
 			<strong><?php echo null === $stored ? esc_html__( 'Not set', 'taronix-gold-price' ) : esc_html( number_format_i18n( $stored ) ); ?></strong>
+		</p>
+		<p>
+			<?php esc_html_e( 'Stored price (gold24_price):', 'taronix-gold-price' ); ?>
+			<strong><?php echo null === $stored_24 ? esc_html__( 'Not set', 'taronix-gold-price' ) : esc_html( number_format_i18n( $stored_24 ) ); ?></strong>
+			<span class="description"><?php esc_html_e( 'Derived from gold18_price × 24/18 on each successful cron update.', 'taronix-gold-price' ); ?></span>
 		</p>
 		<form method="post" action="options.php">
 			<?php settings_fields( 'taronix_gold_price' ); ?>
@@ -217,7 +249,7 @@ function taronix_gold_price_settings_page(): void {
 			<?php submit_button( __( 'Save Settings', 'taronix-gold-price' ) ); ?>
 		</form>
 		<h2><?php esc_html_e( 'External Cron Job', 'taronix-gold-price' ); ?></h2>
-		<p><?php esc_html_e( 'gold18_price is updated only when this URL is called. Until then, the stored price never changes.', 'taronix-gold-price' ); ?></p>
+		<p><?php esc_html_e( 'gold18_price and gold24_price are updated only when this URL is called. Until then, stored prices never change.', 'taronix-gold-price' ); ?></p>
 		<p><?php esc_html_e( 'Call this URL from your server cron (every 1–5 minutes):', 'taronix-gold-price' ); ?></p>
 		<p>
 			<code style="display:block;direction:ltr;text-align:left;word-break:break-all;"><?php echo esc_html( $cron_url ); ?></code>
