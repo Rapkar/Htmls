@@ -45,6 +45,12 @@ class Daric_Login_Client {
 
 		$cooldown_until = (int) ( $this->cache_get( 'cooldown_until' ) ?? 0 );
 		if ( $cooldown_until > time() ) {
+			Daric_Gold_Logger::warning(
+				'daric-login',
+				'Login skipped: cooldown active after previous failure.',
+				array( 'cooldown_left_sec' => $cooldown_until - time() )
+			);
+
 			return array(
 				'ok'                 => false,
 				'source'             => 'cooldown',
@@ -83,9 +89,19 @@ class Daric_Login_Client {
 			$res = $this->login_once();
 
 			if ( empty( $res['ok'] ) ) {
+				Daric_Gold_Logger::error(
+					'daric-login',
+					'Login failed.',
+					array(
+						'http_code' => $res['http_code'] ?? 0,
+						'error'     => $res['error'] ?? 'unknown',
+					)
+				);
 				$this->cache_set( 'cooldown_until', time() + $this->cooldown_on_fail, $this->cooldown_on_fail );
 				return $res;
 			}
+
+			Daric_Gold_Logger::info( 'daric-login', 'Login successful; access token cached.' );
 
 			$this->cache_set(
 				'tokens',
@@ -121,6 +137,12 @@ class Daric_Login_Client {
 		$tokens = $this->get_tokens();
 
 		if ( empty( $tokens['ok'] ) || empty( $tokens['access_token'] ) ) {
+			Daric_Gold_Logger::error(
+				'daric-login',
+				'Unable to get access token for price request.',
+				array( 'token_result' => $tokens )
+			);
+
 			return array(
 				'ok'           => false,
 				'http_code'    => 0,
@@ -133,10 +155,13 @@ class Daric_Login_Client {
 		$result = $this->send_get_request( $url, $tokens['access_token'] );
 
 		if ( (int) ( $result['http_code'] ?? 0 ) === 401 ) {
+			Daric_Gold_Logger::warning( 'daric-login', 'Price request returned 401; retrying after re-login.' );
 			$this->cache_delete( 'tokens' );
 
 			$tokens = $this->get_tokens();
 			if ( empty( $tokens['ok'] ) || empty( $tokens['access_token'] ) ) {
+				Daric_Gold_Logger::error( 'daric-login', 'Token expired and re-login failed.' );
+
 				return array(
 					'ok'           => false,
 					'http_code'    => 401,
@@ -169,6 +194,15 @@ class Daric_Login_Client {
 		);
 
 		if ( is_wp_error( $response ) ) {
+			Daric_Gold_Logger::error(
+				'daric-login',
+				'Gold price HTTP request failed.',
+				array(
+					'url'   => $url,
+					'error' => $response->get_error_message(),
+				)
+			);
+
 			return array(
 				'ok'       => false,
 				'http_code' => 0,
@@ -218,6 +252,12 @@ class Daric_Login_Client {
 		);
 
 		if ( is_wp_error( $response ) ) {
+			Daric_Gold_Logger::error(
+				'daric-login',
+				'SSO login HTTP request failed.',
+				array( 'error' => $response->get_error_message() )
+			);
+
 			return array(
 				'ok'                 => false,
 				'http_code'          => 0,
@@ -234,6 +274,12 @@ class Daric_Login_Client {
 		$decoded   = json_decode( $body, true );
 
 		if ( ! is_array( $decoded ) ) {
+			Daric_Gold_Logger::error(
+				'daric-login',
+				'SSO login returned invalid JSON.',
+				array( 'http_code' => $http_code )
+			);
+
 			return array(
 				'ok'                 => false,
 				'http_code'          => $http_code,
@@ -253,6 +299,14 @@ class Daric_Login_Client {
 		$access_token  = is_array( $token_obj ) ? ( $token_obj['Accesstoken'] ?? $token_obj['AccessToken'] ?? null ) : null;
 		$refresh_token = is_array( $token_obj ) ? ( $token_obj['RefreshToken'] ?? null ) : null;
 		$refresh_exp   = is_array( $token_obj ) ? ( $token_obj['RefreshTokenExpirationDate'] ?? null ) : null;
+
+		if ( empty( $access_token ) && ( $http_code >= 200 && $http_code < 300 ) ) {
+			Daric_Gold_Logger::error(
+				'daric-login',
+				'SSO login succeeded but access token missing in response.',
+				array( 'http_code' => $http_code )
+			);
+		}
 
 		return array(
 			'ok'                 => ( $http_code >= 200 && $http_code < 300 ) && ! empty( $access_token ),

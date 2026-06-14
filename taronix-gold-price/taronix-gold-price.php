@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Taronix Gold Price
  * Description: دریافت قیمت طلا از API داریک، ذخیره امن در gold18_price و نمایش با شورت‌کد taronix_gold_price
- * Version: 1.2.2
+ * Version: 1.2.3
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,11 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.2' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.2.3' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );
 
+require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-gold-logger.php';
 require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-login-client.php';
 require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-gold-sync.php';
 require_once TARONIX_GOLD_PRICE_DIR . 'includes/class-daric-gold-cron-endpoint.php';
@@ -235,7 +236,17 @@ function taronix_gold_price_settings_page(): void {
 		</form>
 
 		<p class="description">
-			<?php esc_html_e( 'Optional wp-config.php constants: DARIC_GOLD_USERNAME, DARIC_GOLD_PASSWORD, DARIC_GOLD_CRON_SECRET', 'taronix-gold-price' ); ?>
+			<?php esc_html_e( 'Optional wp-config.php constants: DARIC_GOLD_USERNAME, DARIC_GOLD_PASSWORD, DARIC_GOLD_CRON_SECRET, DARIC_GOLD_LOG_DIR', 'taronix-gold-price' ); ?>
+		</p>
+
+		<h2><?php esc_html_e( 'Log File', 'taronix-gold-price' ); ?></h2>
+		<p><?php esc_html_e( 'Errors and sync events are written to a dedicated log file (independent of WordPress debug settings):', 'taronix-gold-price' ); ?></p>
+		<p>
+			<code style="display:block;direction:ltr;text-align:left;word-break:break-all;"><?php echo esc_html( Daric_Gold_Logger::get_log_file() ); ?></code>
+		</p>
+		<p class="description">
+			<?php esc_html_e( 'View on server:', 'taronix-gold-price' ); ?>
+			<code style="display:block;direction:ltr;text-align:left;">tail -f <?php echo esc_html( Daric_Gold_Logger::get_log_file() ); ?></code>
 		</p>
 	</div>
 	<?php

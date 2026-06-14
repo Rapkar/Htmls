@@ -52,6 +52,8 @@ class Daric_Gold_Cron_Endpoint {
 		}
 
 		if ( '' === $provided || ! hash_equals( $secret, $provided ) ) {
+			Daric_Gold_Logger::warning( 'daric-cron', 'Invalid cron secret received.' );
+
 			return new WP_Error(
 				'cron_secret_invalid',
 				'Invalid cron secret.',
@@ -60,6 +62,8 @@ class Daric_Gold_Cron_Endpoint {
 		}
 
 		if ( get_transient( self::TRANSIENT_RUNNING ) ) {
+			Daric_Gold_Logger::warning( 'daric-cron', 'Sync skipped: another sync is already running.' );
+
 			return new WP_REST_Response(
 				array(
 					'success' => false,

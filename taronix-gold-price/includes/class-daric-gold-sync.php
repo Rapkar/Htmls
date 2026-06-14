@@ -45,7 +45,7 @@ class Daric_Gold_Sync {
 
 		$credentials = self::get_credentials();
 		if ( empty( $credentials['username'] ) || empty( $credentials['password'] ) ) {
-			self::log( 'Missing API credentials; keeping previous price.' );
+			Daric_Gold_Logger::error( self::LOG_SOURCE, 'Missing API credentials; keeping previous price.' );
 			return self::failure_result( $previous, 'missing_credentials', 'Daric API credentials are not configured.' );
 		}
 
@@ -61,12 +61,13 @@ class Daric_Gold_Sync {
 
 		if ( null === $new_price ) {
 			$error = $response['error'] ?? 'Invalid or empty gold price response';
-			self::log(
-				sprintf(
-					'Price fetch failed (http=%s, source=%s): %s',
-					(string) ( $response['http_code'] ?? 0 ),
-					(string) ( $resolved['source'] ?? 'none' ),
-					$error
+			Daric_Gold_Logger::error(
+				self::LOG_SOURCE,
+				'Price fetch failed; keeping previous price.',
+				array(
+					'http_code' => $response['http_code'] ?? 0,
+					'source'    => $resolved['source'] ?? 'none',
+					'error'     => $error,
 				)
 			);
 			return self::failure_result( $previous, 'fetch_failed', $error, $response );
@@ -74,6 +75,14 @@ class Daric_Gold_Sync {
 
 		// قیمت فروش نیامد و از مقدار قبلی دیتابیس استفاده شد — آپدیت لازم نیست.
 		if ( 'stored_previous' === ( $resolved['source'] ?? '' ) ) {
+			Daric_Gold_Logger::warning(
+				self::LOG_SOURCE,
+				'BestSellPrice unavailable; kept previous stored price.',
+				array(
+					'price'    => $new_price,
+					'previous' => $previous,
+				)
+			);
 			return array(
 				'success'      => true,
 				'updated'      => false,
@@ -86,11 +95,12 @@ class Daric_Gold_Sync {
 		}
 
 		if ( ! self::is_price_sane_vs_previous( $new_price, $previous ) ) {
-			self::log(
-				sprintf(
-					'Rejected suspicious price %d (previous=%s). Keeping stored value.',
-					$new_price,
-					null === $previous ? 'none' : (string) $previous
+			Daric_Gold_Logger::warning(
+				self::LOG_SOURCE,
+				'Rejected suspicious price; kept previous stored price.',
+				array(
+					'new_price' => $new_price,
+					'previous'  => $previous,
 				)
 			);
 			return self::failure_result(
@@ -102,6 +112,15 @@ class Daric_Gold_Sync {
 		}
 
 		if ( $previous === $new_price ) {
+			Daric_Gold_Logger::info(
+				self::LOG_SOURCE,
+				'Sync completed; price unchanged.',
+				array(
+					'price'  => $new_price,
+					'source' => $resolved['source'] ?? null,
+				)
+			);
+
 			return array(
 				'success'      => true,
 				'updated'      => false,
@@ -116,7 +135,15 @@ class Daric_Gold_Sync {
 		delete_transient( self::TRANSIENT_INITIAL );
 		delete_transient( self::TRANSIENT_DISPLAY );
 
-		self::log( sprintf( 'Updated gold18_price: %s -> %d', null === $previous ? 'none' : (string) $previous, $new_price ) );
+		Daric_Gold_Logger::info(
+			self::LOG_SOURCE,
+			'Price updated successfully.',
+			array(
+				'previous' => $previous,
+				'price'    => $new_price,
+				'source'   => $resolved['source'] ?? null,
+			)
+		);
 
 		return array(
 			'success'      => true,
@@ -300,13 +327,22 @@ class Daric_Gold_Sync {
 
 		return str_replace( $persian, range( 0, 9 ), str_replace( $arabic, range( 0, 9 ), $value ) );
 	}
+}
+		return array(
+			'success'      => false,
+			'updated'      => false,
+			'price'        => $previous,
+			'previous'     => $previous,
+			'code'         => $code,
+			'message'      => $message,
+			'api_response' => $api_response,
+		);
+	}
 
-	private static function log( string $message ): void {
-		if ( function_exists( 'wc_get_logger' ) ) {
-			wc_get_logger()->warning( $message, array( 'source' => self::LOG_SOURCE ) );
-			return;
-		}
+	private static function to_ascii_digits( string $value ): string {
+		$persian = array( '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' );
+		$arabic  = array( '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' );
 
-		error_log( '[' . self::LOG_SOURCE . '] ' . $message );
+		return str_replace( $persian, range( 0, 9 ), str_replace( $arabic, range( 0, 9 ), $value ) );
 	}
 }

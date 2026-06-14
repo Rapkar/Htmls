@@ -228,14 +228,55 @@ taronix-gold-price/
 ├── includes/
 │   ├── class-daric-login-client.php    # لاگین SSO + درخواست GET با Bearer
 │   ├── class-daric-gold-sync.php       # اعتبارسنجی + update_option
-│   └── class-daric-gold-cron-endpoint.php  # REST endpoint کران
+│   ├── class-daric-gold-cron-endpoint.php  # REST endpoint کران
+│   └── class-daric-gold-logger.php     # فایل لاگ اختصاصی
 ├── assets/css/taronix-gold-price.css   # استایل شورت‌کد
 └── README.md
 ```
 
 ---
 
-## عیب‌یابی
+## فایل لاگ اختصاصی
+
+لاگ‌ها **مستقل از تنظیمات debug وردپرس** در فایل جدا نوشته می‌شوند:
+
+```
+wp-content/taronix-gold-logs/daric-gold.log
+```
+
+مسیر قابل تغییر در `wp-config.php`:
+
+```php
+define('DARIC_GOLD_LOG_DIR', '/var/log/taronix-gold');
+```
+
+### نمونه خط لاگ
+
+```
+[2026-06-14 08:30:15] [ERROR] [daric-gold-sync] Price fetch failed; keeping previous price. | {"http_code":502,"source":"none","error":"Unable to get access token"}
+[2026-06-14 08:30:10] [WARNING] [daric-login] Login skipped: cooldown active after previous failure. | {"cooldown_left_sec":42}
+[2026-06-14 08:25:00] [INFO] [daric-gold-sync] Price updated successfully. | {"previous":17500000,"price":17568294,"source":"best_sell_price"}
+```
+
+### چه چیزهایی لاگ می‌شوند
+
+| سطح | نمونه |
+|-----|-------|
+| ERROR | خطای لاگین، خطای API، credential نبودن |
+| WARNING | secret اشتباه، قیمت مشکوک، استفاده از قیمت قبلی |
+| INFO | آپدیت موفق، قیمت بدون تغییر |
+
+رمز، توکن و secret در لاگ **ماسک** می‌شوند.
+
+### مشاهده روی سرور
+
+```bash
+tail -f wp-content/taronix-gold-logs/daric-gold.log
+```
+
+مسیر دقیق در **تنظیمات → Taronix Gold Price** نمایش داده می‌شود.
+
+---
 
 | مشکل | راه‌حل |
 |------|--------|
@@ -246,7 +287,7 @@ taronix-gold-price/
 | شورت‌کد خالی است | هنوز کران اجرا نشده یا `gold18_price` خالی است |
 | قیمت ۰ شد | با این پلاگین امکان‌پذیر نیست — قیمت نامعتبر ذخیره نمی‌شود |
 
-لاگ‌ها در `error_log` وردپرس با برچسب `[daric-gold-sync]` ثبت می‌شوند. اگر WooCommerce فعال باشد، در WooCommerce → Status → Logs هم دیده می‌شوند.
+برای جزئیات بیشتر فایل `wp-content/taronix-gold-logs/daric-gold.log` را بررسی کنید.
 
 ---
 
