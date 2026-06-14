@@ -66,10 +66,11 @@ class Daric_Gold_Cron_Endpoint {
 
 			return new WP_REST_Response(
 				array(
-					'success' => false,
-					'code'    => 'already_running',
-					'message' => 'Gold price sync is already running.',
-					'price'   => Daric_Gold_Sync::get_stored_price(),
+					'success'   => false,
+					'code'      => 'already_running',
+					'message'   => 'Gold price sync is already running.',
+					'price'     => Daric_Gold_Sync::get_stored_price(),
+					'price_24'  => Daric_Gold_Sync::get_stored_price_24(),
 				),
 				409
 			);

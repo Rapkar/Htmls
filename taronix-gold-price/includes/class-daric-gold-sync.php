@@ -141,7 +141,7 @@ class Daric_Gold_Sync {
 					'message'      => 'Price unchanged.',
 					'api_response' => $response,
 				),
-				$new_price,
+				$previous_24 ?? self::calculate_price_24_from_18( $new_price ),
 				$previous_24,
 				false
 			);
@@ -241,7 +241,7 @@ class Daric_Gold_Sync {
 	public static function get_stored_price_24(): ?int {
 		$price = get_option( self::OPTION_PRICE_24 );
 
-		return self::normalize_price( $price );
+		return self::normalize_price_24( $price );
 	}
 
 	/**
@@ -259,8 +259,9 @@ class Daric_Gold_Sync {
 		 * @param int $gold18 Source 18k price.
 		 */
 		$gold24 = (int) round( $gold18 * 24 / 18 );
+		$gold24 = (int) apply_filters( 'daric_gold_price_24_from_18', $gold24, $gold18 );
 
-		return (int) apply_filters( 'daric_gold_price_24_from_18', $gold24, $gold18 );
+		return self::normalize_price_24( $gold24 );
 	}
 
 	/**
@@ -355,6 +356,32 @@ class Daric_Gold_Sync {
 
 		$price = (int) round( (float) $text );
 		if ( $price <= 0 || $price < self::MIN_PRICE || $price > self::MAX_PRICE ) {
+			return null;
+		}
+
+		return $price;
+	}
+
+	/**
+	 * @param mixed $raw
+	 */
+	public static function normalize_price_24( $raw ): ?int {
+		if ( null === $raw || '' === $raw || false === $raw ) {
+			return null;
+		}
+
+		$text = self::to_ascii_digits( (string) $raw );
+		$text = preg_replace( '/[^\d.]/', '', $text );
+
+		if ( null === $text || '' === $text || ! is_numeric( $text ) ) {
+			return null;
+		}
+
+		$price   = (int) round( (float) $text );
+		$min_24  = (int) ceil( self::MIN_PRICE * 24 / 18 );
+		$max_24  = (int) floor( self::MAX_PRICE * 24 / 18 );
+
+		if ( $price <= 0 || $price < $min_24 || $price > $max_24 ) {
 			return null;
 		}
 

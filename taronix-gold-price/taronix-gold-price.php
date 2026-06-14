@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Taronix Gold Price
  * Description: دریافت قیمت طلا از API داریک، ذخیره gold18_price و gold24_price و نمایش با شورت‌کد
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: Taronix
  * Text Domain: taronix-gold-price
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARONIX_GOLD_PRICE_VERSION', '1.3.0' );
+define( 'TARONIX_GOLD_PRICE_VERSION', '1.3.1' );
 define( 'TARONIX_GOLD_PRICE_FILE', __FILE__ );
 define( 'TARONIX_GOLD_PRICE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TARONIX_GOLD_PRICE_URL', plugin_dir_url( __FILE__ ) );
@@ -66,7 +66,7 @@ function taronix_gold_price_get_value() {
 function taronix_gold_price_get_value_24() {
 	$cached_price = get_transient( Daric_Gold_Sync::TRANSIENT_DISPLAY_24 );
 
-	if ( false !== $cached_price && Daric_Gold_Sync::normalize_price( $cached_price ) ) {
+	if ( false !== $cached_price && Daric_Gold_Sync::normalize_price_24( $cached_price ) ) {
 		return (int) $cached_price;
 	}
 
